@@ -3,7 +3,7 @@ import { hostname } from "os";
 
 const nextConfig: NextConfig = {
   /* config options here */
-  Images: {
+  images: {
     remotePatterns: [ 
       {
         protocol: "http",
@@ -13,6 +13,9 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "res.cloudinary.com",
       },
+    ],
+    domains: [
+      "res.cloudinary.com",
     ]
   }
 };
