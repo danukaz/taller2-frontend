@@ -1,5 +1,5 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
+#!/bin/sh
+npm run pre-push
 
 echo "🧪 Compilando el proyecto con Next.js..."
 
