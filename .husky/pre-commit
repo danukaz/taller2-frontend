@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔍 Ejecutando validación de formato y linting..."
+
+# Ejecutar lint-staged para archivos modificados
+npx lint-staged
+
+if [ $? -ne 0 ]; then
+  echo "❌ Falló la validación de formato. Revisa los errores anteriores."
+  exit 1
+fi
+
+# Verificar tipos TypeScript
+echo "🔍 Verificando tipos TypeScript..."
+npm run type-check
+
+if [ $? -ne 0 ]; then
+  echo "❌ Falló la verificación de tipos TypeScript."
+  exit 1
+fi
+
+echo "✅ Validaciones de pre-commit exitosas."

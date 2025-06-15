@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🧪 Compilando el proyecto con Next.js..."
+
+# Compilar el proyecto
+npm run build
+
+if [ $? -ne 0 ]; then
+  echo "❌ Falló la compilación. No se permite el push."
+  exit 1
+fi
+
+echo "✅ Compilación exitosa."
+
+echo "🔍 Ejecutando validación completa de ESLint..."
+
+# Ejecutar ESLint en todo el proyecto
+npm run lint
+
+if [ $? -ne 0 ]; then
+  echo "❌ El código no pasa las validaciones de ESLint."
+  exit 1
+fi
+
+echo "✅ Todas las validaciones pasaron correctamente. Procediendo con el push."
