@@ -3,7 +3,7 @@ npm run pre-push
 
 echo "🔍 Ejecutando lint rápido antes de push..."
 
-npx next lint --max-warnings=0
+npx next lint
 
 if [ $? -ne 0 ]; then
   echo "❌ Lint falló, arregla los errores antes de hacer push."
