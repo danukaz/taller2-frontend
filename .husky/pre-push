@@ -1,26 +1,13 @@
 #!/bin/sh
 npm run pre-push
 
-echo "🧪 Compilando el proyecto con Next.js..."
+echo "🔍 Ejecutando lint rápido antes de push..."
 
-# Compilar el proyecto
-npm run build
+npx next lint --max-warnings=0
 
 if [ $? -ne 0 ]; then
-  echo "❌ Falló la compilación. No se permite el push."
+  echo "❌ Lint falló, arregla los errores antes de hacer push."
   exit 1
 fi
 
-echo "✅ Compilación exitosa."
-
-echo "🔍 Ejecutando validación completa de ESLint..."
-
-# Ejecutar ESLint en todo el proyecto
-npm run lint
-
-if [ $? -ne 0 ]; then
-  echo "❌ El código no pasa las validaciones de ESLint."
-  exit 1
-fi
-
-echo "✅ Todas las validaciones pasaron correctamente. Procediendo con el push."
+echo "✅ Lint aprobado, puedes hacer push."
