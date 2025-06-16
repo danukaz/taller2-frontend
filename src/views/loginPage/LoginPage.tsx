@@ -8,6 +8,8 @@ import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ApiBackend } from "@/clients/axios";
 import { ResponseAPI } from "@/interfaces/ResponseAPI";
+import { ArrowLeftIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 
 const formSchema = z.object({
@@ -30,6 +32,7 @@ export const LoginPage = () => {
             password: "",
         },
     });
+    const router = useRouter(); 
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
@@ -56,6 +59,9 @@ export const LoginPage = () => {
                 <p className="mt-10 text-xs md:text-sm text-gray-200 text-center">
                     © 2025 IDWM. Todos los derechos reservados.
                 </p>
+                <Button variant={"outline"} className="mt-4 text-blue-600" onClick={() => router.back()}>
+                    <ArrowLeftIcon/> Volver
+                </Button>
             </div>
 
             {/* Lado derecho */}
@@ -67,7 +73,7 @@ export const LoginPage = () => {
                     </h3>
                     <p className="mb-4 text-sm text-gray-600 text-center md:text-left">
                         ¿No tienes cuenta?{' '}
-                        <a href="#" className="text-blue-600 underline">
+                        <a href="register" className="text-blue-600 underline">
                             Crea una ahora
                         </a>, es gratis.
                     </p>
