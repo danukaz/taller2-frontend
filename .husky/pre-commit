@@ -1,0 +1,11 @@
+#!/bin/sh
+# Verificar tipos TypeScript
+echo "🔍 Verificando tipos TypeScript..."
+npm run type-check
+
+if [ $? -ne 0 ]; then
+  echo "❌ Falló la verificación de tipos TypeScript."
+  exit 1
+fi
+
+echo "✅ Validaciones de pre-commit exitosas."
