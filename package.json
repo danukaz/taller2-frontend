@@ -12,7 +12,6 @@
     "format:check": "prettier --check .",
     "type-check": "tsc --noEmit",
     "prepare": "husky",
-    "pre-push": "npm run build-check && npm run lint:check",
     "build-check": "echo '🧪 Compilando el proyecto con Next.js...' && next build",
     "lint:check": "echo '🔍 Ejecutando validación de ESLint...' && next lint"
   },
