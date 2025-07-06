@@ -1,5 +1,5 @@
 'use client'
-import { Navbar } from '@/components/Navbar';
+
 import { ProductCard } from '@/components/products/ProductCard';
 import { ProductDialog } from '@/components/products/ProductDialog';
 import { Product } from '@/interfaces/Product';
@@ -20,10 +20,7 @@ export default function ViewProductsPage() {
 
     return (
         <div className='min-h-screen bg-gray-100'>
-            {/* Navbar */}
-            <Navbar/>
-
-
+            
             {/* Banner */}
             <div className="relative h-64 md:h-96">
                 <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/tienda.png')" }}/>

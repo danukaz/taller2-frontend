@@ -10,6 +10,10 @@ import { ApiBackend } from "@/clients/axios";
 import { ResponseAPI } from "@/interfaces/ResponseAPI";
 import { ArrowLeftIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useContext, useState } from "react";
+import { User } from "@/interfaces/User";
+import { AuthContext } from "@/contexts/auth/AuthContext";
+import { decodeJWT } from "@/helpers/decodeJWT";
 
 
 const formSchema = z.object({
@@ -32,15 +36,55 @@ export const LoginPage = () => {
             password: "",
         },
     });
+    const [errors, setErrors] = useState<string | null>(null);
+    const [errorBool, setErrorBool] = useState<boolean>(false);
+    const { auth, user } = useContext(AuthContext);
     const router = useRouter(); 
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            console.log("Form submitted with values:", values);
-            const data = await ApiBackend.post<any>('Auth/login', values);
-            console.log("Response from API:", data);
+            console.log("Valores enviados de formulario:", values);
+            const {data} = await ApiBackend.post<ResponseAPI>('Auth/login', values);
+            if (data.success == false) {
+                console.error("Error en la respuesta del servidor:", data.message);
+                setErrors("Error en la respuesta del servidor:");
+                setErrorBool(true);
+                return;
+            }
+            setErrors(null);
+            setErrorBool(false);
+            
+            const data_ = data.data;
+            const payload = decodeJWT(data_.token);
+            if (!payload) {
+                console.error("Error al decodificar el token:", data_.token);
+                setErrors("Error al decodificar el token");
+                setErrorBool(true);
+                return;
+            }
+            const user_: User = {
+                email: data_.email,
+                lastName: data_.lastName,
+                firtsName: data_.firtsName,
+                token: data_.token,
+                role: payload.role,
+            } 
+
+            localStorage.setItem('token', data_.token);
+            auth(user_);
+            
+            if (payload.role == 'Admin') {
+                router.push('/admin');
+            } else if (payload.role == 'User') {
+                router.push('/client');
+            }
+
         } catch (error: any){
-            console.log("Error during form submission:", error);
+            let errorCatch = error.response.data.message;
+            console.log("Error al enviar el formulario:", errorCatch);
+
+            setErrors(errorCatch);
+            setErrorBool(true);
         }
     } 
 
@@ -107,6 +151,13 @@ export const LoginPage = () => {
                                     </FormItem>
                                 )}
                             />
+
+                            {errorBool && (
+                                <div className = "text-red-500 text-sm mt-2 p-2 bg-red-100 rounded">
+                                    {errors}
+                                </div>
+                            )}
+
                             <Button type="submit">Iniciar sesión</Button>
                         </form>
                     </Form>
